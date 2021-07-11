@@ -1,0 +1,25 @@
+{
+    "name": "pact",
+    "displayName": "PACT",
+    "description": "PACT Programming Language",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.58.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "pact",
+            "aliases": ["Pact Programming Language", "pact"],
+            "extensions": [".pact"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "pact",
+            "scopeName": "source.pact",
+            "path": "./syntaxes/pact.tmLanguage.json"
+        }]
+    }
+}

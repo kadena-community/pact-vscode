@@ -1,0 +1,178 @@
+{
+	
+	"scopeName": "source.pact",
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Pact Programming Language",
+	"fileTypes": ["pact", "repl"],
+	"foldingStartMarker": "\\(\\s*$",
+	"foldingStopMarker": "^\\s*\\)",
+	"patterns": [
+		{
+		"include": "#comment"
+		},
+		{
+		"include": "#sexp"
+		},
+		{
+		"include": "#reserved"
+		},
+		{
+		"include": "#type"
+		},
+		{
+		"include": "#string"
+		},
+		{
+		"include": "#list"
+		},
+		{
+		"include": "#object"
+		},
+		{
+		"include": "#literal"
+		},
+		{
+		"include": "#symbol"
+		},
+		{
+		"include": "#metas"
+		},
+		{
+		"include": "#let"
+		}
+	],
+	"repository": {
+		"comment":{
+			"patterns": [
+				{
+					"captures": {
+						"1":{
+							"name":"punctuation.definition.comment.pact"
+						}
+					},
+					"name":"comment.line.semicolon.pact",
+					"match": "(;).*$\\n?"
+				}
+			]
+		},
+		"literal":{
+			"patterns": 
+			[
+				{
+					"name": "constant.language.boolean.pact",
+					"match": "(true|false)"
+				},
+				{
+					"name": "constant.numeric.double.pact",
+					"match": "\\b(-?\\d+\\.\\d+)\\b"
+				},
+				{
+					"name": "constant.numeric.integer.pact",
+					"match": "\\b(-?\\d+)\\b"
+				},
+				{
+					"name": "constant.language.binder.pact",
+					"match": "(:=?)"
+				}
+			]
+		},
+		"reserved":{
+			"patterns": [
+				{
+					"name": "keyword.reserved.pact",
+					"match": "\\b(module|interface|list|let|let\\*|defun|defpact|defconst|defschema|deftable|defcap|step|use|step-with-rollback|invariants?|properties|property|defproperty|bless|implements)\\b"
+				}
+			]
+		},
+		"type":{
+			"patterns": [
+				{
+					"match": "(?:[:])(integer|decimal|time|bool|string|list|value|keyset|guard|(object|table)?\\{[\\w%#+\\-\\._&\\$@<>=\\?\\*!\\|/]+\\}|object|table)",
+					"captures": {
+						"1" :{
+							"name": "keyword.reserved.type.pact"
+						}
+					}
+				}
+			]
+		},
+		"object":{
+			"begin": "(\\{)",
+			"beginCaptures": {
+				"1":{
+					"name": "punctuation.section.object.begin.pact"
+				}
+			},
+			"end": "(\\}(?=[\\}\\]\\)\\s]*(?:;|$)))|(\\})",
+			"endCaptures": {
+				"1":{
+					"name": "punctuation.section.object.end.trailing.pact"
+				},
+				"2":{
+					"name": "punctuation.section.object.end.pact"
+				}
+			},
+			"name": "meta.object.pact",
+			"patterns": [
+				{
+					"begin": "(:=)",
+					"beginCaptures": {
+						"1":{
+							"name": "constant.binder.pact"
+						}
+					},
+					"end": "([\\w%#+\\-_&\\$@<>=\\?\\*!\\|/]+)",
+					"endCaptures": {
+						"1":{
+							"name": "variable.binder.pact"
+						}
+					}
+				},
+				{
+					"include": "$self"
+				}
+				
+			]
+		},
+		"let":{
+			"begin": "\\((let\\*?)\\s",
+			"beginCaptures": {
+				"1":{
+					"name": "keyword.let.pact"
+				}
+			},
+			"end": "\\)",
+			"name": "meta.let.declaration.pact",
+			"patterns": [
+				{
+					"begin": "\\(",
+					"end": "(?=\\))",
+					"name": "meta.let.bindings.pact",
+					"patterns": [
+						{
+							"begin": "\\(([\\w%#+\\-_&\\$@<>=\\?\\*!\\|/]+)\\b",
+							"beginCaptures": {
+								"1": {
+									"name": "variable.let.pact"
+								}
+							},
+							"end": "\\)",
+							"name": "meta.let.binding.pact",
+							"patterns": [
+								{
+									"include": "$self"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		"sexp":{
+			
+		}
+
+
+	}
+
+}

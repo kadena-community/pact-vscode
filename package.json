@@ -2,6 +2,7 @@
     "name": "pact",
     "displayName": "PACT",
     "description": "PACT Programming Language",
+    "publisher": "Floppie",
     "version": "0.0.1",
     "engines": {
         "vscode": "^1.58.0"
@@ -21,5 +22,9 @@
             "scopeName": "source.pact",
             "path": "./syntaxes/pact.tmLanguage.json"
         }]
-    }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/floordebest/pact-vscode.git"
+      }
 }

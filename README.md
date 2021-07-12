@@ -14,6 +14,9 @@ Links for information about the Pact Language:
 
 ## Release Notes
 
+### 0.0.2
+
+Fixed support for .repl files and lowered the minimal required VSCode version
 
 ### 0.0.1
 

@@ -3,9 +3,9 @@
     "displayName": "PACT",
     "description": "PACT Programming Language",
     "publisher": "Floppie",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "engines": {
-        "vscode": "^1.58.0"
+        "vscode": "^1.57.0"
     },
     "categories": [
         "Programming Languages"
@@ -14,7 +14,7 @@
         "languages": [{
             "id": "pact",
             "aliases": ["Pact Programming Language", "pact"],
-            "extensions": [".pact"],
+            "extensions": [".pact", ".repl"],
             "configuration": "./language-configuration.json"
         }],
         "grammars": [{

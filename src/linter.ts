@@ -108,70 +108,8 @@ export class PactLinterProvider {
       this.diagnosticCollection.set(uri,ds.concat([d]));
     }
 
-      //
-    // const tokens = violation.replace("~||~", "").split("~|~");
-
-    // return new Diagnostic(
-    //   this.getRange(tokens),
-    //   this.getMessage(tokens),
-    //   this.getSeverity(tokens)
-    // );
-    // return new Diagnostic(
-    //   new Range(0,1,0,3),
-    //   "Ruh Roh: " + entry,
-    //   DiagnosticSeverity.Error
-    // );
   }
 
-  private getRange(tokens: string[]) {
-    return new Range(
-      Number(tokens[1]) - 1,
-      Number(tokens[2]) - 1,
-      Number(tokens[1]) - 1,
-      Number.MAX_VALUE
-    );
-  }
-
-  private getMessage(tokens: string[]) {
-    return (
-      "Lint: " +
-      this.getSeverityAsText(tokens[0]).toUpperCase() +
-      ": " +
-      tokens[3]
-    );
-  }
-
-  private getSeverityAsText(severity: string) {
-    switch (parseInt(severity, 10)) {
-      case 5:
-        return "gentle";
-      case 4:
-        return "stern";
-      case 3:
-        return "harsh";
-      case 2:
-        return "cruel";
-      default:
-        return "brutal";
-    }
-  }
-
-  private getSeverity(tokens: string[]) {
-    switch (this.configuration[this.getSeverityAsText(tokens[0])]) {
-      case "hint":
-        return DiagnosticSeverity.Hint;
-      case "info":
-        return DiagnosticSeverity.Information;
-      case "warning":
-        return DiagnosticSeverity.Warning;
-      default:
-        return DiagnosticSeverity.Error;
-    }
-  }
-
-  private isValidViolation(violation: string) {
-    return true;
-  }
 
   private getWorkspaceFolder(): string | undefined {
     if (workspace.workspaceFolders) {
@@ -187,11 +125,4 @@ export class PactLinterProvider {
     }
   }
 
-  private getCommandArguments(): string[] {
-    return [
-      "--verbose",
-      "%s~|~%l~|~%c~|~%m~|~%e~|~%p~||~%n",
-      this.document.fileName,
-    ];
-  }
 }

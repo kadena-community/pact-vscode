@@ -3,10 +3,14 @@
 import { spawn } from "child_process";
 
 import {
+  CancellationToken,
   Diagnostic,
   DiagnosticCollection,
   DiagnosticSeverity,
   Disposable,
+  Hover,
+  MarkdownString,
+  Position,
   Range,
   TextDocument,
   WorkspaceConfiguration,
@@ -15,14 +19,18 @@ import {
   Uri
 } from "vscode";
 
+import { normalize } from "path";
+
 export class PactLinterProvider {
   private diagnosticCollection: DiagnosticCollection;
   private configuration: WorkspaceConfiguration;
   private document!: TextDocument;
+  private hovers: Map<String,Map<Range,String>> = new Map();
 
   public constructor() {
     this.diagnosticCollection = languages.createDiagnosticCollection();
     this.configuration = workspace.getConfiguration("pact");
+
   }
 
   public activate(subscriptions: Disposable[]): void {
@@ -46,6 +54,7 @@ export class PactLinterProvider {
     if (textDocument.languageId !== "pact") {
       return;
     }
+    this.hovers.clear();
     this.document = textDocument;
     const decodedChunks: Buffer[] = [];
     const cwd = this.getWorkspaceFolder();
@@ -83,7 +92,7 @@ export class PactLinterProvider {
   }
 
   private createDiagnostic(entry: string) {
-    console.log("entry: \n" + entry);
+    //console.log("entry: \n" + entry);
     const re = /^(?<file>[^:]*):(?<line>\d+):(?<col>\d+):(?:(?<sev>[^:]+):)?(?<msg>.*)/;
     const m = re.exec(entry);
     if (m !== null && m.groups !== null) { 
@@ -103,9 +112,17 @@ export class PactLinterProvider {
         msg ?? "",
         sev
       );
-      const uri = Uri.file(f);
-      const ds = this.diagnosticCollection.get(uri) ?? [];
-      this.diagnosticCollection.set(uri,ds.concat([d]));
+      const uri = Uri.file(normalize(f));
+      if (sev !== DiagnosticSeverity.Information) {
+        const ds = this.diagnosticCollection.get(uri) ?? [];
+        this.diagnosticCollection.set(uri,ds.concat([d]));
+      } else {
+        const hs = this.hovers.get(uri.toString()) ?? new Map();
+        hs.set(new Range(ln,col,ln,col+3),msg ?? "");
+        this.hovers.set(uri.toString(),hs);
+        //console.log("add: " + uri + ", " + this.hovers.size);
+
+      }
     }
 
   }
@@ -122,6 +139,22 @@ export class PactLinterProvider {
       return workspace.workspaceFolders[0].uri.fsPath;
     } else {
       return undefined;
+    }
+  }
+
+  public provideHover
+      ( doc: TextDocument, position: Position, token: CancellationToken) {
+    const hs = this.hovers.get(doc.uri.toString()) ?? new Map();
+    let ss:Array<String> = new Array();
+    hs.forEach((s:string,r:Range) => {
+      if (r.contains(position)) {
+        ss.push(s);
+      }
+    });
+    if (ss.length > 0) {
+      return new Hover(new MarkdownString(ss.join("\n")));
+    } else {
+      return null;
     }
   }
 

@@ -33,7 +33,21 @@
                 "default": "pact",
                 "description": "The name or path to the pact executable.",
                 "scope": "window"
+              },
+              "pact.enableTrace": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable pact trace output.",
+                "scope": "window"
+              },
+              "pact.enableCoverage": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable code coverage. Requires coverage extension for display.",
+                "scope": "window"
               }
+
+
             }
           }
     },

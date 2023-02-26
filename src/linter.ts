@@ -60,11 +60,10 @@ export class PactLinterProvider {
     const cwd = this.getWorkspaceFolder();
     const proc = spawn(
       this.configuration.executable,
-      [
-        "-r",
-        "-t",
-        this.document.fileName
-      ],
+      [ "-r" ]
+        .concat(this.configuration.enableTrace ? ["-t"] : [])
+        .concat(this.configuration.enableCoverage ? ["-c"] : [])
+        .concat(this.document.fileName),
       { cwd }
     );
     proc.stdout.on("data", (data: Buffer) => {

@@ -21,6 +21,10 @@ https://www.kadena.io/
 
 ## Release Notes
 
+### 0.0.4
+
+Added linting support
+
 ### 0.0.3
 
 Updated the description and on request of the Kadena Team added a Kadena logo to the extension.

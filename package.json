@@ -4,7 +4,7 @@
     "description": "Pact Programming Language",
     "icon": "images/kadena_blue_icon.png",
     "publisher": "kadena-community",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "engines": {
         "vscode": "^1.75.0"
     },
@@ -13,43 +13,57 @@
     ],
     "main": "./out/extension",
     "contributes": {
-        "languages": [{
-            "id": "pact",
-            "aliases": ["Pact Programming Language", "pact"],
-            "extensions": [".pact", ".repl"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "pact",
-            "scopeName": "source.pact",
-            "path": "./syntaxes/pact.tmLanguage.json"
-        }],
+        "languages": [
+            {
+                "id": "pact",
+                "aliases": [
+                    "Pact Programming Language",
+                    "pact"
+                ],
+                "extensions": [
+                    ".pact",
+                    ".repl"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "pact",
+                "scopeName": "source.pact",
+                "path": "./syntaxes/pact.tmLanguage.json"
+            }
+        ],
         "configuration": {
             "type": "object",
             "title": "Pact configuration",
             "properties": {
-              "pact.executable": {
-                "type": "string",
-                "default": "pact",
-                "description": "The name or path to the pact executable.",
-                "scope": "window"
-              },
-              "pact.enableTrace": {
-                "type": "boolean",
-                "default": true,
-                "description": "Enable pact trace output.",
-                "scope": "window"
-              },
-              "pact.enableCoverage": {
-                "type": "boolean",
-                "default": false,
-                "description": "Enable code coverage. Requires coverage extension for display.",
-                "scope": "window"
-              }
-
-
+                "pact.executable": {
+                    "type": "string",
+                    "default": "pact",
+                    "description": "The name or path to the pact executable.",
+                    "scope": "window"
+                },
+                "pact.enableTrace": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable pact trace output.",
+                    "scope": "window"
+                },
+                "pact.enableCoverage": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable code coverage. Requires coverage extension for display.",
+                    "scope": "window"
+                },
+                "pact.server": {
+					"type": "string",
+					"default": "pact-lsp",
+					"description": "Path to the Pact LSP executable (pact-lsp)",
+                    "scope": "window"
+				}
             }
-          }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -60,20 +74,23 @@
         "test": "node ./out/test/runTest.js"
     },
     "devDependencies": {
-        "@types/vscode": "^1.75.0",
         "@types/glob": "^8.0.1",
         "@types/mocha": "^10.0.1",
         "@types/node": "16.x",
+        "@types/vscode": "^1.78.0",
         "@typescript-eslint/eslint-plugin": "^5.49.0",
         "@typescript-eslint/parser": "^5.49.0",
+        "@vscode/test-electron": "^2.2.2",
         "eslint": "^8.33.0",
         "glob": "^8.1.0",
         "mocha": "^10.1.0",
-        "typescript": "^4.9.4",
-        "@vscode/test-electron": "^2.2.2"
+        "typescript": "^4.9.4"
     },
     "repository": {
         "type": "git",
         "url": "https://github.com/kadena-community/pact-vscode.git"
-      }
+    },
+    "dependencies": {
+        "vscode-languageclient": "^8.1.0"
+    }
 }

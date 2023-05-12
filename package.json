@@ -57,11 +57,11 @@
                     "scope": "window"
                 },
                 "pact.server": {
-					"type": "string",
-					"default": "pact-lsp",
-					"description": "Path to the Pact LSP executable (pact-lsp)",
+                    "type": "string",
+                    "default": "pact-lsp",
+                    "description": "Path to the Pact LSP executable (pact-lsp)",
                     "scope": "window"
-				}
+                }
             }
         }
     },
@@ -77,7 +77,7 @@
         "@types/glob": "^8.0.1",
         "@types/mocha": "^10.0.1",
         "@types/node": "16.x",
-        "@types/vscode": "^1.78.0",
+        "@types/vscode": "^1.75.1",
         "@typescript-eslint/eslint-plugin": "^5.49.0",
         "@typescript-eslint/parser": "^5.49.0",
         "@vscode/test-electron": "^2.2.2",

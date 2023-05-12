@@ -310,7 +310,7 @@
 		"patterns": [
 		  {
 			"begin": "'",
-			"end": "(?=\\s|[,:\"'.])",
+			"end": "(?=\\s|[],:\"'.)])",
 			"name": "string.quoted.symbol.pact"
 		  }
 		]

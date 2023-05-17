@@ -1,5 +1,5 @@
 
-import { ExtensionContext, languages } from "vscode";
+import { ExtensionContext, languages, workspace } from "vscode";
 import { PactLinterProvider } from "./linter";
 import { PactLanguageClient } from "./languageclient";
 
@@ -10,8 +10,9 @@ export async function activate(context: ExtensionContext) {
     linterProvider.activate(context.subscriptions);
     const d = languages.registerHoverProvider("pact",linterProvider);
     context.subscriptions.push(d);
-
-    client = new PactLanguageClient();        
+    if(workspace.getConfiguration().get('pact.enableLsp')!){
+        client = new PactLanguageClient(); 
+    };
 }
 
 export function deactivate(): Thenable<void> | undefined {

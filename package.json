@@ -56,6 +56,12 @@
                     "description": "Enable code coverage. Requires coverage extension for display.",
                     "scope": "window"
                 },
+                "pact.enableLsp": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable the pact-lsp.",
+                    "scope": "window"
+                },
                 "pact.server": {
                     "type": "string",
                     "default": "pact-lsp",

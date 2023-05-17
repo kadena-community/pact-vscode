@@ -22,7 +22,7 @@ https://www.kadena.io/
 ## Requirements
 
 - For tracing and coverage: [pact](https://github.com/kadena-io/pact)
-- For auto-completion: [pact-lsp](https://github.com/kadena-io/pact-lsp)
+- For completion: [pact-lsp](https://github.com/kadena-io/pact-lsp)
 
 ## Extension Settings
 

@@ -1,6 +1,6 @@
 # pact README
 
-This extensions supports syntax highlighting for the Pact Programming Language, used on the Kadena Blockchain.  
+This extensions supports syntax highlighting and completion for the Pact Programming Language, used on the Kadena Blockchain.  
   
 Pact is an open-source programming language for writing smart contracts.  
   
@@ -15,11 +15,24 @@ https://www.kadena.io/
 
 ## Features
 
+- Syntax-highting
+- Linting
+- Completion
+
 ## Requirements
+
+- For tracing and coverage: [pact](https://github.com/kadena-io/pact)
+- For completion: [pact-lsp](https://github.com/kadena-io/pact-lsp)
 
 ## Extension Settings
 
+Pact executable and pact-lsp paths can be set from the settings menu.
+
 ## Release Notes
+
+### 0.0.5
+
+Added Pact LSP client
 
 ### 0.0.4
 

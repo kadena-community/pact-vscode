@@ -16,7 +16,9 @@ import {
   WorkspaceConfiguration,
   languages,
   workspace,
-  Uri
+  Uri,
+  commands,
+  ConfigurationChangeEvent,
 } from "vscode";
 
 import { normalize } from "path";
@@ -30,10 +32,10 @@ export class PactLinterProvider {
   public constructor() {
     this.diagnosticCollection = languages.createDiagnosticCollection();
     this.configuration = workspace.getConfiguration("pact");
-
   }
 
   public activate(subscriptions: Disposable[]): void {
+    workspace.onDidChangeConfiguration(this.handleConfigurationChange, this)
     workspace.onDidOpenTextDocument(this.lint, this, subscriptions);
     workspace.onDidSaveTextDocument(this.lint, this);
     workspace.onDidCloseTextDocument(
@@ -48,6 +50,15 @@ export class PactLinterProvider {
   public dispose(): void {
     this.diagnosticCollection.clear();
     this.diagnosticCollection.dispose();
+  }
+
+  private handleConfigurationChange() {
+    if (! workspace.getConfiguration("pact").enableCoverage) {
+      const configuration = workspace.getConfiguration("coverage-gutters");
+      configuration.update('showLineCoverage', false);
+      configuration.update('showRulerCoverage', false);
+      configuration.update('showGutterCoverage', false);
+    }
   }
 
   private lint(textDocument: TextDocument) {
@@ -68,15 +79,15 @@ export class PactLinterProvider {
     );
     proc.stdout.on("data", (data: Buffer) => {
       console.log(`stdout: ${data}`);
-      //decodedChunks.push(data);
     });
 
-    proc.stderr.on("data", (data: Buffer) => {      
+    proc.stderr.on("data", (data: Buffer) => {
       decodedChunks.push(data);
     });
 
     proc.stdout.on("end", () => {
       this.getDiagnostics(decodedChunks.join(""));
+      this.generateCoverageReport();
     });
   }
 
@@ -91,7 +102,6 @@ export class PactLinterProvider {
   }
 
   private createDiagnostic(entry: string) {
-    //console.log("entry: \n" + entry);
     const re = /^(?<file>[^:]*):(?<line>\d+):(?<col>\d+):(?:(?<sev>[^:]+):)?(?<msg>.*)/;
     const m = re.exec(entry);
     if (m !== null && m.groups !== null) { 
@@ -119,13 +129,9 @@ export class PactLinterProvider {
         const hs = this.hovers.get(uri.toString()) ?? new Map();
         hs.set(new Range(ln,col,ln,col+3),msg ?? "");
         this.hovers.set(uri.toString(),hs);
-        //console.log("add: " + uri + ", " + this.hovers.size);
-
       }
     }
-
   }
-
 
   private getWorkspaceFolder(): string | undefined {
     if (workspace.workspaceFolders) {
@@ -139,6 +145,27 @@ export class PactLinterProvider {
     } else {
       return undefined;
     }
+  }
+
+  private generateCoverageReport(): void {
+    if (! this.configuration.enableCoverage) {
+      return;
+    }
+
+    const directory = this.document.fileName.split('/').slice(0, -1).join('/')
+
+    const configuration = workspace.getConfiguration("coverage-gutters");
+    configuration.update('showLineCoverage', true);
+    configuration.update('showRulerCoverage', true);
+    configuration.update('showGutterCoverage', true);
+    configuration.update('coverageReportFileName', `${directory}/coverage/html/index.html`);
+    commands.executeCommand("coverage-gutters.displayCoverage")
+
+    spawn(
+      "npm",
+      [ "run", "coverage:html", "--", "-o", `${directory}/coverage/html`, `${directory}/coverage/lcov.info` ],
+      { cwd: this.getWorkspaceFolder() }
+    );
   }
 
   public provideHover
@@ -156,5 +183,4 @@ export class PactLinterProvider {
       return null;
     }
   }
-
 }

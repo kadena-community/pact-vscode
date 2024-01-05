@@ -18,11 +18,14 @@ jobs:
           node-version: 16
       - run: npm ci
       - name: Publish to Open VSX Registry
+        continue-on-error: true
         uses: HaaLeo/publish-vscode-extension@v1
         with:
           pat: ${{ secrets.OPEN_VSX_TOKEN }}
+          preRelease: ${{ env.prerelease }}
       - name: Publish to Visual Studio Marketplace
         uses: HaaLeo/publish-vscode-extension@v1
         with:
           pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+          preRelease: ${{ env.prerelease }}
           registryUrl: https://marketplace.visualstudio.com

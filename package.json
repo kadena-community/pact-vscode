@@ -3,7 +3,7 @@
     "displayName": "Pact",
     "description": "Pact Programming Language",
     "icon": "images/kadena_blue_icon.png",
-    "publisher": "kadena-community",
+    "publisher": "kadena",
     "version": "0.0.5",
     "engines": {
         "vscode": "^1.75.0"

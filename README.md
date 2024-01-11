@@ -1,6 +1,12 @@
-# pact README
+# Welcome to Pact VSCode plugin
 
-This extensions supports syntax highlighting and completion for the Pact Programming Language, used on the Kadena Blockchain.  
+The Pact VSCode plugin supports syntax highlighting and completion for the Pact Programming Language, used on the Kadena Blockchain.
+
+<picture>
+  <source srcset="./images/kadena-logo-white.png" media="(prefers-color-scheme: dark)"/>
+  <img src="./images/kadena-logo-black.png" width="200" alt="kadena logo" />
+</picture>
+  
   
 Pact is an open-source programming language for writing smart contracts.  
   

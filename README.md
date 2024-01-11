@@ -36,6 +36,11 @@ Pact executable and pact-lsp paths can be set from the settings menu.
 
 ## Release Notes
 
+### 0.0.6
+
+Added Code Coverage
+Added new logo
+
 ### 0.0.5
 
 Added Pact LSP client

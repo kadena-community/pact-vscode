@@ -2,7 +2,7 @@
     "name": "pact",
     "displayName": "Pact",
     "description": "Pact Programming Language",
-    "icon": "images/kadena_blue_icon.png",
+    "icon": "images/kadena-logo.png",
     "publisher": "kadena",
     "version": "0.0.6",
     "engines": {

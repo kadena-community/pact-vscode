@@ -1,6 +1,6 @@
 {
-    "name": "pactlang",
-    "displayName": "Pact",
+    "name": "pact",
+    "displayName": "PactLang",
     "description": "Pact Programming Language",
     "icon": "images/kadena-logo.png",
     "publisher": "kadena",

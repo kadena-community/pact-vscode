@@ -1,60 +1,51 @@
-import { workspace } from "vscode";
-import * as vscode from 'vscode';
+import { getPactInstallationInfo, installPact } from '@pact-toolbox/installer';
+import { ExtensionContext, window, workspace } from 'vscode';
+import { Executable, LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 
-import {
-	LanguageClient,
-	LanguageClientOptions,
-	ServerOptions,
-	TransportKind
-} from 'vscode-languageclient/node';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function startLanguageClient(_context: ExtensionContext) {
+  const traceOutputChannel = window.createOutputChannel('Pact Language Server trace');
+  // eslint-disable-next-line prefer-const
+  let { versionInfo, isInstalled } = await getPactInstallationInfo({ nightly: true });
+  if (!isInstalled) {
+    traceOutputChannel.show();
+    traceOutputChannel.appendLine(
+      `Installing the latest version of Pact from the nightly channel. This may take a few minutes...`,
+    );
+    versionInfo = await installPact({
+      nightly: true,
+    });
+    traceOutputChannel.appendLine(`Pact installed at ${versionInfo.pactExecutablePath}`);
+    setTimeout(() => {
+      traceOutputChannel.hide();
+    }, 5000);
+  }
 
+  const run: Executable = {
+    command: versionInfo.pactExecutablePath,
+    args: ['--lsp'],
+    options: {
+      env: process.env,
+    },
+  };
+  const serverOptions: ServerOptions = {
+    run,
+    debug: run,
+  };
 
-export class PactLanguageClient {
-    private client: LanguageClient;
-    public constructor() {
-        // LSP Config
-        const serverModule: string = vscode.workspace.getConfiguration().get('pact.server')!;
-        const pact: string = vscode.workspace.getConfiguration().get('pact.executable')!;
+  // Options to control the language client
+  const clientOptions: LanguageClientOptions = {
+    // Register the server for plain text documents
+    documentSelector: [{ scheme: 'file', language: 'pact' }],
+    synchronize: {
+      // Notify the server about file changes to '.clientrc files contained in the workspace
+      fileEvents: workspace.createFileSystemWatcher('**/.clientrc'),
+    },
+    traceOutputChannel,
+  };
 
-        // If the extension is launched in debug mode then the debug server options are used
-        // Otherwise the run options are used
-        const serverOptions: ServerOptions = {
-            run: {
-                transport: TransportKind.stdio,
-                command: serverModule,
-                //	options: {cwd: 'pact-lsp/pact-lsp/result/bin'}
-            },
-            debug: {
-                transport: TransportKind.stdio,
-                command: serverModule,
-                //	options: {cwd: 'pact-lsp/result/bin'}
-            }
-        };
-
-        // Options to control the language client
-        const clientOptions: LanguageClientOptions = {
-            // Register the server for plain text documents
-            documentSelector: [{ scheme: 'file', language: 'pact' }],
-            synchronize: {
-                // Notify the server about file changes to '.clientrc files contained in the workspace
-                fileEvents: workspace.createFileSystemWatcher('**/*.{pact,repl}')
-            },
-            initializationOptions: [{ pact: pact }]
-        };
-
-        // Create the language client and start the client.
-        this.client = new LanguageClient(
-            'pactLanguageServer',
-            'Pact Language Server',
-            serverOptions,
-            clientOptions
-        );
-
-        // Start the client. This will also launch the server
-	    this.client.start();
-    }
-
-    stop(): Thenable<void> | undefined {
-        return this.client.stop();
-    }
+  const client = new LanguageClient('pactLanguageServer', 'Pact Language Server', serverOptions, clientOptions);
+  // Start the client. This will also launch the server
+  await client.start();
+  return client;
 }

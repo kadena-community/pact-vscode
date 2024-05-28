@@ -14,10 +14,10 @@ It’s designed from the ground up to support the unique challenges of developin
   
 Pact is designed with safety in mind. Its design is informed by existing approaches to smart contracts as well as stored procedure languages like SQL and LISP. Pact resembles a general-purpose, Turing-complete language. It includes LISP-like syntax, user functions, modules, and imperative style.  
   
-For more information please visit:  
+For more information please visit:
 
-https://pact-language.readthedocs.io/  
-https://www.kadena.io/  
+<https://docs.kadena.io/build/>  
+<https://www.kadena.io/>
 
 ## Features
 
@@ -28,11 +28,35 @@ https://www.kadena.io/
 ## Requirements
 
 - For tracing and coverage: [pact](https://github.com/kadena-io/pact)
-- For completion: [pact-lsp](https://github.com/kadena-io/pact-lsp)
+- For LSP: [pact-5](https://github.com/kadena-io/pact-5) if not installed we use [pactup](https://github.com/kadena-community/pactup) to install it.
 
 ## Extension Settings
 
-Pact executable and pact-lsp paths can be set from the settings menu.
+## `pact.executable`
+
+- **Type**: `string`
+- **Default**: `"pact"`
+- **Description**: The name or path to the pact executable, if version is not pact 5 we will run `npx pactup install development-latest` to install pact 5
+
+## `pact.enableTrace`
+
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Enable pact trace output.
+
+## `pact.enableCoverage`
+
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Enable code coverage. Requires coverage extension for display.
+
+## `pact.enableLsp`
+
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Enable the pact-lsp.
+-
+- `pact.pactExecutable` pact binary path if not provider we use
 
 ## Release Notes
 
@@ -61,6 +85,4 @@ Fixed support for .repl files and lowered the minimal required VSCode version
 
 Initial release of the highlighting syntax
 
-
------------------------------------------------------------------------------------------------------------
-
+---

@@ -32,31 +32,59 @@ For more information please visit:
 
 ## Extension Settings
 
-## `pact.executable`
+### `pact.executable`
 
 - **Type**: `string`
 - **Default**: `"pact"`
 - **Description**: The name or path to the pact executable, if version is not pact 5 we will run `npx pactup install development-latest` to install pact 5
 
-## `pact.enableTrace`
+### `pact.enableTrace`
 
 - **Type**: `boolean`
 - **Default**: `true`
 - **Description**: Enable pact trace output.
 
-## `pact.enableCoverage`
+### `pact.enableCoverage`
 
 - **Type**: `boolean`
 - **Default**: `false`
 - **Description**: Enable code coverage. Requires coverage extension for display.
 
-## `pact.enableLsp`
+### `pact.enableLsp`
 
 - **Type**: `boolean`
 - **Default**: `true`
 - **Description**: Enable the pact-lsp.
--
-- `pact.pactExecutable` pact binary path if not provider we use
+
+## Extension commands
+
+`Pact: Restart Language Server` to restart pact lsp.
+
+## Development
+
+To get started with local development
+
+- Make sure you have nodejs and pnpm installed.
+- `pnpm i` install dependencies.
+- Press F5 to run `pnpm dev` and launch vscode extension debug host
+
+Testing, Linting and Type checking
+
+- `pnpm test` for vitest.
+- `pnpm lint` for eslint.
+- `pnpm typecheck` for typescript type checking
+
+Building
+
+- `pnpm package` to create `.vsix` file.
+
+Update version and create a release tag.
+
+- `pnpm release` it will ask for version pump type then will update package.json version and creates a git tag and pushes.
+
+Publishing
+
+- Run `pnpm run publish` to package and publish the extension.
 
 ## Release Notes
 

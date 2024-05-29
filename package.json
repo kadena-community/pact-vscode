@@ -25,7 +25,8 @@
     "commands": [
       {
         "command": "pact.restartLanguageServer",
-        "title": "Pact: Restart Language Server"
+        "title": "Restart Language Server",
+        "category": "Pact"
       }
     ],
     "languages": [
@@ -81,12 +82,13 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --external vscode",
-    "dev": "nr build --watch",
+    "build": "tsup",
+    "dev": "tsup --watch src",
     "lint": "eslint .",
+    "format": "prettier --write .",
     "vscode:prepublish": "nr build",
-    "publish": "vsce publish --no-dependencies",
-    "pack": "vsce package --no-dependencies",
+    "publish": "vsce publish",
+    "package": "vsce package",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "release": "bumpp && nr publish",
@@ -108,9 +110,8 @@
     "@lcov-viewer/cli": "^1.3.0",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.6",
-    "@typescript-eslint/eslint-plugin": "^7.7.1",
-    "@typescript-eslint/parser": "^7.7.1",
     "@vscode/test-electron": "^2.3.9",
+    "@vscode/test-cli": "^0.0.9",
     "esbuild": "^0.20.2",
     "glob": "^10.3.12",
     "mocha": "^10.4.0",

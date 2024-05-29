@@ -3,7 +3,7 @@ import { LanguageClient } from 'vscode-languageclient/node';
 import { startLanguageClient } from './lsp';
 import { PactLinterProvider } from './linter';
 import {} from './lsp';
-let client: LanguageClient;
+let client: LanguageClient | undefined;
 
 export async function activate(context: ExtensionContext) {
   const linterProvider = new PactLinterProvider();

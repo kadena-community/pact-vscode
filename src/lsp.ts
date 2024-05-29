@@ -1,29 +1,24 @@
 import { ExtensionContext, commands, window, workspace } from 'vscode';
 import { Executable, LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
-import { execSync } from 'node:child_process';
-import { join } from 'node:path';
-
-const traceOutputChannel = window.createOutputChannel('Pact Language Server Trace');
-const pwd = workspace.workspaceFolders?.[0].uri.fsPath;
+import { execSync } from 'child_process';
+import { join } from 'path';
+import { log, logError } from './log';
+import { version } from '../package.json';
 
 function installPact(version = 'development-latest') {
-  traceOutputChannel.show();
-  traceOutputChannel.appendLine(pwd ? `Installing Pact in ${pwd}` : 'Installing Pact');
+  const pwd = workspace.workspaceFolders?.[0].uri.fsPath;
+  log.appendLine(pwd ? `Installing Pact in ${pwd}` : 'Installing Pact');
   try {
     execSync(`npx pactup install ${version}`, { cwd: pwd });
   } catch (e) {
-    traceOutputChannel.appendLine((e as Error).toString());
-    window.showErrorMessage('Failed to install Pact');
-    throw e;
+    logError(e);
   }
   try {
     const pactPath = execSync(`npx pactup which ${version}`, { cwd: pwd });
-    traceOutputChannel.appendLine('Using Pact executable path: ' + pactPath.toString().trim());
+    log.appendLine('Using Pact executable path: ' + pactPath.toString().trim());
     return join(pactPath.toString().trim(), 'bin', 'pact') as string;
   } catch (e) {
-    traceOutputChannel.appendLine((e as Error).toString());
-    window.showErrorMessage('Failed to get Pact executable path');
-    throw e;
+    logError(e);
   }
 }
 
@@ -40,15 +35,20 @@ function isPactVersion5(executable: string) {
 }
 
 export async function startLanguageClient(context: ExtensionContext) {
+  log.appendLine(`⚪️ Pact for VS Code v${version}\n`);
   const pactExecutable = workspace.getConfiguration().get<string>('pact.executable');
   const command = pactExecutable && isPactVersion5(pactExecutable) ? pactExecutable : installPact();
-  traceOutputChannel.appendLine('Starting Pact Language Server');
+  if (!command) {
+    log.appendLine('❌ Unable to find Pact executable.');
+    window.showErrorMessage('Unable to find Pact executable.');
+    return;
+  }
+  log.appendLine('🚀 Starting Pact LSP...');
   const run: Executable = {
     command,
     args: ['--lsp'],
     options: {
       env: process.env,
-      cwd: pwd,
     },
   };
   const serverOptions: ServerOptions = {
@@ -61,15 +61,17 @@ export async function startLanguageClient(context: ExtensionContext) {
     synchronize: {
       fileEvents: workspace.createFileSystemWatcher('**/.clientrc'),
     },
-    traceOutputChannel,
+    outputChannel: log,
+    traceOutputChannel: log,
   };
 
   const client = new LanguageClient('pactLanguageServer', 'Pact Language Server', serverOptions, clientOptions);
   // restart language server
   context.subscriptions.push(
     commands.registerCommand('pact.restartLanguageServer', async () => {
+      log.appendLine('🔁 Restart Pact LSP...');
       await client.restart();
-      window.showInformationMessage('Pact language server restarted');
+      log.appendLine('✅ Restarted Pact LSP.');
     }),
   );
 

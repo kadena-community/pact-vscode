@@ -5,28 +5,18 @@ on:
         type: boolean
         default: true
         required: false
-        description: 'Submit as pre-release'
+        description: "Submit as pre-release"
 
 name: Deploy Extension
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20]
     steps:
-      - uses: actions/checkout@v4
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
         with:
-          version: 9
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
-      - name: Install dependencies
-        run: pnpm install
+          node-version: 16
+      - run: npm ci
       - name: Publish to Open VSX Registry
         continue-on-error: true
         uses: HaaLeo/publish-vscode-extension@v1

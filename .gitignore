@@ -1,12 +1,5 @@
-.cache
-.DS_Store
-.idea
-*.log
-*.tgz
-*.vsix
-coverage
-dist
-lib-cov
-logs
+*.code-workspace
 node_modules
-temp
+out
+.vscode/
+pact-0.0.6.vsix

@@ -1,8 +1,7 @@
-.github
 .vscode/**
-**/*.ts
-**/*.map
+.vscode-test/**
 .gitignore
+vsc-extension-quickstart.md
 **/tsconfig.json
 node_modules/**
 !node_modules/vscode-jsonrpc/**
@@ -11,5 +10,3 @@ node_modules/**
 !node_modules/vscode-languageserver-types/**
 !node_modules/{minimatch,brace-expansion,concat-map,balanced-match}/**
 !node_modules/{semver,lru-cache,yallist}/**
-**/*.mjs
-**/*.pact

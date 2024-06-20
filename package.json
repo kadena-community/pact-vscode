@@ -1,132 +1,114 @@
 {
-  "name": "pactlang",
-  "displayName": "PactLang",
-  "description": "Pact Programming Language",
-  "icon": "images/kadena-logo.png",
-  "publisher": "kadena",
-  "version": "0.0.6",
-  "private": true,
-  "packageManager": "pnpm@9.1.3",
-  "engines": {
-    "vscode": "^1.89.0"
-  },
-  "categories": [
-    "Programming Languages"
-  ],
-  "main": "./dist/index.js",
-  "files": [
-    "dist"
-  ],
-  "activationEvents": [
-    "workspaceContains:**/.pact",
-    "workspaceContains:**/.repl"
-  ],
-  "contributes": {
-    "commands": [
-      {
-        "command": "pact.restartLanguageServer",
-        "title": "Restart Language Server",
-        "category": "Pact"
-      }
+    "name": "pactlang",
+    "displayName": "PactLang",
+    "description": "Pact Programming Language",
+    "icon": "images/kadena-logo.png",
+    "publisher": "kadena",
+    "version": "0.0.6",
+    "engines": {
+        "vscode": "^1.75.0"
+    },
+    "categories": [
+        "Programming Languages"
     ],
-    "languages": [
-      {
-        "id": "pact",
-        "aliases": [
-          "Pact Programming Language",
-          "pact"
+    "main": "./out/extension",
+    "contributes": {
+        "languages": [
+            {
+                "id": "pact",
+                "aliases": [
+                    "Pact Programming Language",
+                    "pact"
+                ],
+                "extensions": [
+                    ".pact",
+                    ".repl"
+                ],
+                "configuration": "./language-configuration.json"
+            }
         ],
-        "extensions": [
-          ".pact",
-          ".repl"
+        "grammars": [
+            {
+                "language": "pact",
+                "scopeName": "source.pact",
+                "path": "./syntaxes/pact.tmLanguage.json"
+            }
         ],
-        "configuration": "./language-configuration.json"
-      }
-    ],
-    "grammars": [
-      {
-        "language": "pact",
-        "scopeName": "source.pact",
-        "path": "./syntaxes/pact.tmLanguage.json"
-      }
-    ],
-    "configuration": {
-      "type": "object",
-      "title": "Pact configuration",
-      "properties": {
-        "pact.executable": {
-          "type": "string",
-          "default": "pact",
-          "description": "The name or path to the pact executable",
-          "scope": "window"
-        },
-        "pact.enableTrace": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable pact trace output.",
-          "scope": "window"
-        },
-        "pact.enableCoverage": {
-          "type": "boolean",
-          "default": false,
-          "description": "Enable code coverage. Requires coverage extension for display.",
-          "scope": "window"
-        },
-        "pact.enableLsp": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable the pact-lsp.",
-          "scope": "window"
+        "configuration": {
+            "type": "object",
+            "title": "Pact configuration",
+            "properties": {
+                "pact.executable": {
+                    "type": "string",
+                    "default": "pact",
+                    "description": "The name or path to the pact executable.",
+                    "scope": "window"
+                },
+                "pact.enableTrace": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable pact trace output.",
+                    "scope": "window"
+                },
+                "pact.enableCoverage": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable code coverage. Requires coverage extension for display.",
+                    "scope": "window"
+                },
+                "pact.enableLsp": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable the pact-lsp.",
+                    "scope": "window"
+                },
+                "pact.server": {
+                    "type": "string",
+                    "default": "pact-lsp",
+                    "description": "Path to the Pact LSP executable (pact-lsp)",
+                    "scope": "window"
+                }
+            }
         }
-      }
-    }
-  },
-  "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch src",
-    "lint": "eslint .",
-    "format": "prettier --write .",
-    "vscode:prepublish": "nr build",
-    "publish": "vsce publish",
-    "package": "vsce package",
-    "test": "vitest",
-    "typecheck": "tsc --noEmit",
-    "release": "bumpp && nr publish",
-    "coverage:html": "lcov-viewer lcov"
-  },
-  "devDependencies": {
-    "typescript-eslint": "^7.11.0",
-    "@antfu/ni": "^0.21.12",
-    "@types/node": "^20.12.12",
-    "@types/vscode": "^1.89.0",
-    "@vscode/vsce": "^2.26.1",
-    "bumpp": "^9.4.1",
-    "eslint": "^9.3.0",
-    "esno": "^4.7.0",
-    "rimraf": "^5.0.7",
-    "tsup": "^8.0.2",
-    "vite": "^5.2.11",
-    "vitest": "^1.6.0",
-    "@lcov-viewer/cli": "^1.3.0",
-    "@types/glob": "^8.1.0",
-    "@types/mocha": "^10.0.6",
-    "@vscode/test-electron": "^2.3.9",
-    "@vscode/test-cli": "^0.0.9",
-    "esbuild": "^0.20.2",
-    "glob": "^10.3.12",
-    "mocha": "^10.4.0",
-    "prettier": "^3.2.5",
-    "typescript": "^5.4.5"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kadena-community/pact-vscode.git"
-  },
-  "dependencies": {
-    "vscode-languageclient": "^9.0.1"
-  },
-  "extensionDependencies": [
-    "ryanluker.vscode-coverage-gutters",
-    "george-alisson.html-preview-vscode"
-  ]
+    },
+    "activationEvents": [
+        "workspaceContains:**/.pact",
+        "workspaceContains:**/.repl"
+    ],
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "build": "npm run vscode:prepublish && npx vsce package",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js",
+        "coverage:html": "lcov-viewer lcov"
+    },
+    "devDependencies": {
+        "@lcov-viewer/cli": "^1.3.0",
+        "@types/glob": "^8.0.1",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "16.x",
+        "@types/vscode": "^1.75.0",
+        "@typescript-eslint/eslint-plugin": "^5.49.0",
+        "@typescript-eslint/parser": "^5.49.0",
+        "@vscode/test-electron": "^2.2.2",
+        "eslint": "^8.33.0",
+        "glob": "^8.1.0",
+        "mocha": "^10.1.0",
+        "typescript": "^4.9.4",
+        "vsce": "^2.15.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kadena-community/pact-vscode.git"
+    },
+    "dependencies": {
+        "vscode-languageclient": "^8.1.0"
+    },
+    "extensionDependencies": [
+        "ryanluker.vscode-coverage-gutters",
+        "george-alisson.html-preview-vscode"
+    ]
 }

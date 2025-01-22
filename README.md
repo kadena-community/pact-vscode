@@ -32,11 +32,16 @@ For more information please visit:
 
 ## Extension Settings
 
+### `pact.version`
+
+- **Type**: `string`
+- **Description**: The version of the pact you want to install using pactup
+
 ### `pact.executable`
 
 - **Type**: `string`
 - **Default**: `"pact"`
-- **Description**: The name or path to the pact executable, if version is not pact 5 we will run `npx pactup install development-latest` to install pact 5
+- **Description**: The name or path to the pact executable, if version is not pact 5 we will run `npx pactup install nightly` to install pact 5
 
 ### `pact.enableTrace`
 
@@ -85,32 +90,3 @@ Update version and create a release tag.
 Publishing
 
 - Run `pnpm run publish` to package and publish the extension.
-
-## Release Notes
-
-### 0.0.6
-
-Added Code Coverage
-Added new logo
-
-### 0.0.5
-
-Added Pact LSP client
-
-### 0.0.4
-
-Added linting support
-
-### 0.0.3
-
-Updated the description and on request of the Kadena Team added a Kadena logo to the extension.
-
-### 0.0.2
-
-Fixed support for .repl files and lowered the minimal required VSCode version
-
-### 0.0.1
-
-Initial release of the highlighting syntax
-
----
